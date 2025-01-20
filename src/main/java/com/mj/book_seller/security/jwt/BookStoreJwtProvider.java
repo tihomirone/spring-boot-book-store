@@ -10,12 +10,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Component
 public class BookStoreJwtProvider implements JwtProvider {
 
   @Value("${app.jwt.secret}")
@@ -71,6 +73,7 @@ public class BookStoreJwtProvider implements JwtProvider {
     return new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
   }
 
+  @Override
   public boolean validateToken(HttpServletRequest request) {
     Claims claims = extractClaims(request);
     if (claims == null) {
