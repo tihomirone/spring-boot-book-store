@@ -39,6 +39,7 @@ public class BookStoreUserService implements UserService {
   @Override
   @Transactional
   public void makeAdmin(String username) {
+    userExists(username);
     userRepository.updateUserRole(username, Role.ADMIN);
   }
 
@@ -52,5 +53,13 @@ public class BookStoreUserService implements UserService {
     if (!StringUtils.hasLength(user.getName())) {
       log.error("Signing with user with missing name!");
     }
+  }
+
+  private void userExists(String username) {
+    if (!StringUtils.hasLength(username)) {
+      log.error("Username is empty!");
+      throw new RuntimeException("Username is empty!");
+    }
+    userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Username not found!"));
   }
 }
