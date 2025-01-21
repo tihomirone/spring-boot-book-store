@@ -5,6 +5,7 @@ import com.mj.book_seller.security.jwt.JwtAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -71,6 +72,8 @@ public class SecurityConfigs {
 
     http.authorizeHttpRequests(authorize -> authorize
         .requestMatchers("/api/authentication/**").permitAll()
+        .requestMatchers(HttpMethod.GET, "/api/book").permitAll()
+        .requestMatchers("/api/book/**").hasRole(Role.ADMIN.name())
         .requestMatchers("/api/internal/**").hasRole(Role.SYSTEM_MANAGER.name())
         .anyRequest().authenticated());
 
