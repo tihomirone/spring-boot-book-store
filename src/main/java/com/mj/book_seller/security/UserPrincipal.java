@@ -1,6 +1,8 @@
 package com.mj.book_seller.security;
 
+import com.mj.book_seller.model.Role;
 import com.mj.book_seller.model.UserEntity;
+import com.mj.book_seller.util.SecurityUtils;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +21,15 @@ public class UserPrincipal implements UserDetails {
   transient String password;
   transient UserEntity user;
   private Set<GrantedAuthority> authorities;
+
+  public static UserPrincipal createSuperUser() {
+    Set<GrantedAuthority> authoritySet = Set.of(SecurityUtils.convertToAuthority(Role.SYSTEM_MANAGER.name()));
+    return UserPrincipal.builder()
+        .id(-1L)
+        .username("system-administrator")
+        .authorities(authoritySet)
+        .build();
+  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

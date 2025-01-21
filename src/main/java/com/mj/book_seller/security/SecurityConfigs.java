@@ -1,6 +1,8 @@
 package com.mj.book_seller.security;
 
+import com.mj.book_seller.model.Role;
 import com.mj.book_seller.security.jwt.JwtAuthorizationFilter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +26,9 @@ public class SecurityConfigs {
     this.userDetailsService = userDetailsService;
     this.passwordEncoder = passwordEncoder;
   }
+
+  @Value("${authentication.internal-api-key}")
+  private String internalApiKey;
 
   @Bean
   public AuthenticationManager authenticationManagerBean(HttpSecurity http) throws Exception {
@@ -66,11 +71,18 @@ public class SecurityConfigs {
 
     http.authorizeHttpRequests(authorize -> authorize
         .requestMatchers("/api/authentication/**").permitAll()
+        .requestMatchers("/api/internal/**").hasRole(Role.SYSTEM_MANAGER.name())
         .anyRequest().authenticated());
 
-    http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+    http
+        .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(internalApiAuthenticationFilter(), JwtAuthorizationFilter.class);
 
     return http.build();
+  }
+
+  public InternalApiAuthenticationFilter internalApiAuthenticationFilter() {
+    return new InternalApiAuthenticationFilter(internalApiKey);
   }
 
   @Bean
