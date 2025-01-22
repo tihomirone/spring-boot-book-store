@@ -84,6 +84,7 @@ public class SecurityConfigs {
     return http.build();
   }
 
+  @Bean
   public InternalApiAuthenticationFilter internalApiAuthenticationFilter() {
     return new InternalApiAuthenticationFilter(internalApiKey);
   }

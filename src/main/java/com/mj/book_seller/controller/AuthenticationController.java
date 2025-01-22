@@ -16,12 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthenticationController {
 
-  private final AuthenticationService authenticationService;
+  private final AuthenticationService bookStoreAuthenticationService;
   private final UserService userService;
 
   @PostMapping("signup")
   public ResponseEntity<UserEntity> signUp(@RequestBody UserEntity user) {
     userService.createUser(user);
     return new ResponseEntity<>(user, HttpStatus.OK);
+  }
+
+  @PostMapping("signin")
+  public ResponseEntity<UserEntity> signIn(@RequestBody UserEntity user) {
+    return new ResponseEntity<>(bookStoreAuthenticationService.signInAndReturnJwt(user), HttpStatus.OK);
   }
 }

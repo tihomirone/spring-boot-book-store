@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,6 +18,7 @@ public class BookStoreService implements BookService {
 
   @Override
   public BookEntity saveBook(BookEntity book) {
+    book.setCreateTime(LocalDateTime.now());
     return bookRepository.save(book);
   }
 
