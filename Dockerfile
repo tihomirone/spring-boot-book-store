@@ -12,7 +12,7 @@ COPY build.gradle settings.gradle gradlew gradle/wrapper/gradle-wrapper.properti
 COPY src ./src
 
 # Download dependencies (this helps to cache dependencies and improve build time)
-RUN gradlew build --no-daemon
+RUN ./gradlew build --no-daemon
 
 # Build the app with Gradle
 RUN ./gradlew bootJar --no-daemon
