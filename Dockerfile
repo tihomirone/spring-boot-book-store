@@ -9,7 +9,7 @@ COPY gradle gradle
 COPY build.gradle settings.gradle gradle/wrapper/gradle-wrapper.properties ./
 
 # Download dependencies (this helps to cache dependencies and improve build time)
-RUN ./gradlew build --no-daemon
+RUN gradlew build --no-daemon
 
 # Copy the rest of your application code
 COPY src ./src
