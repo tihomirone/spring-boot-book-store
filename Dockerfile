@@ -11,6 +11,8 @@ COPY build.gradle settings.gradle gradlew gradle/wrapper/gradle-wrapper.properti
 # Copy the rest of your application code
 COPY src ./src
 
+RUN chmod +x ./gradlew
+
 # Download dependencies (this helps to cache dependencies and improve build time)
 RUN ./gradlew build --no-daemon
 
