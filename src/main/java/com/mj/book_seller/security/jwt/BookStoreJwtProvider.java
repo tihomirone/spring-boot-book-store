@@ -5,6 +5,7 @@ import com.mj.book_seller.util.SecurityUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class BookStoreJwtProvider implements JwtProvider {
 
@@ -32,14 +34,6 @@ public class BookStoreJwtProvider implements JwtProvider {
         .map(GrantedAuthority::getAuthority)
         .collect(Collectors.joining());
 
-    /*return Jwts.builder()
-        .subject(user.getUsername())
-        .claim("roles", authorities)
-        .claim("userId", user.getId())
-        .expiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION))
-        .signWith(SignatureAlgorithm.HS512, SecurityUtil.getSignKey(JWT_SECRET))
-        .compact();*/
-
     return Jwts.builder()
         .claims()
           .subject(user.getUsername())
@@ -53,7 +47,12 @@ public class BookStoreJwtProvider implements JwtProvider {
 
   @Override
   public Authentication getAuthentication(HttpServletRequest request) {
-    Claims claims = extractClaims(request);
+    Claims claims = null;
+    try {
+      claims = extractClaims(request);
+    } catch (Exception e) {
+      log.warn("Unable to extract claims from request!");
+    }
     if (claims == null) {
       return null;
     }
