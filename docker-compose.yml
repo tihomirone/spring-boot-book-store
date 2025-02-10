@@ -1,0 +1,30 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 11223344
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/home/tihomir/projects/postgres-book-store
+
+  spring-boot-book-seller:
+    image: spring-boot-book-store-img:7.0
+    container_name: spring-boot-book-store
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+
+  angular-book-seller:
+    image: angular-book-store-img:1.0
+    container_name: angular-book-store
+    ports:
+      - "8081:8081"
+
+volumes:
+  pgdata:
