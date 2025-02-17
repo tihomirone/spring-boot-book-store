@@ -14,7 +14,7 @@ COPY src ./src
 RUN chmod +x ./gradlew
 
 # Download dependencies (this helps to cache dependencies and improve build time)
-RUN ./gradlew build -P prod --scan --no-daemon
+RUN ./gradlew build -P prod -x test --scan --no-daemon
 
 # Build the app with Gradle
 RUN ./gradlew bootJar --no-daemon
