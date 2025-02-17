@@ -1,12 +1,12 @@
 package com.mj.book_seller;
 
-//import org.junit.jupiter.api.Test;
-//import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-//@SpringBootTest
+@SpringBootTest
 class SpringBootBookSellerApplicationTests {
 
-	//@Test
+	@Test
 	void contextLoads() {
 	}
 
