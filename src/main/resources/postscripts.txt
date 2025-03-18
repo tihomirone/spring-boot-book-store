@@ -1,0 +1,8 @@
+//from spring-boot-book-seller folder
+docker build . -t spring-boot-book-store:latest
+
+//from angular-book-seller folder
+docker build . -t angular-book-store:latest
+
+//from spring-boot-book-seller folder
+docker compose up
