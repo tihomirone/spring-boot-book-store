@@ -1,5 +1,5 @@
-# Use an official OpenJDK runtime as a parent image
-FROM openjdk:23-jdk-slim as builder
+# Use Eclipse Temurin (successor to OpenJDK) as a parent image
+FROM eclipse-temurin:23-jdk-alpine AS builder
 
 # Set the working directory in the container
 WORKDIR /app
@@ -20,7 +20,7 @@ RUN ./gradlew build -P prod -x test --scan --no-daemon
 RUN ./gradlew bootJar --no-daemon
 
 # Create a second stage to reduce the image size
-FROM openjdk:23-jdk-slim
+FROM eclipse-temurin:23-jdk-alpine
 
 # Set the working directory in the container
 WORKDIR /app
