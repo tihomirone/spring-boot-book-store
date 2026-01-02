@@ -10,7 +10,15 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/home/tihomir/projects/postgres-book-store
+      - pgdata:/var/lib/postgresql/data
+      - ./db-init:/docker-entrypoint-initdb.d:Z
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bookseller-network
 
   spring-boot-book-store:
     image: spring-boot-book-store:latest
@@ -19,12 +27,24 @@ services:
       - "8080:8080"
     env_file:
       - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - bookseller-network
 
   angular-book-store:
     image: angular-book-store:latest
     container_name: angular-book-store
     ports:
       - "8081:8081"
+    networks:
+      - bookseller-network
 
 volumes:
   pgdata:
+
+networks:
+  bookseller-network:
+    driver: bridge
